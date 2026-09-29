@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Apxmart V2 - Smart Marketplace</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+body{background:#f4f6fb;color:#171717}button{cursor:pointer}.hidden{display:none!important}
+header{position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:18px;padding:14px 5%;background:#ffffffe0;backdrop-filter:blur(18px);border-bottom:1px solid #ddd}
+.logo{font-size:27px;font-weight:900;color:#6d28d9;cursor:pointer}.logo span{color:#111}
+.search{flex:1;padding:13px 18px;border:1px solid #ddd;border-radius:15px;background:#f6f6f8;outline:0}
+.header-buttons{display:flex;gap:7px}.header-buttons button{border:0;padding:11px 13px;border-radius:11px;background:#eeeafa}.login-btn{background:#111!important;color:#fff}
+nav{display:flex;gap:25px;padding:13px 5%;background:#fff;border-bottom:1px solid #eee;overflow:auto}nav button{white-space:nowrap;border:0;background:0;font-weight:bold;color:#555}
+.hero{margin:30px 5%;padding:60px;border-radius:32px;color:#fff;background:linear-gradient(120deg,#11101a,#4c1d95,#7c3aed)}.hero small{color:#ddd}.hero h1{font-size:52px;margin:16px 0}.hero h1 span{color:#d8b4fe}.hero p{max-width:650px;line-height:1.7;color:#ddd}.hero-buttons{margin-top:25px;display:flex;gap:10px;flex-wrap:wrap}
+.primary,.secondary{padding:13px 20px;border-radius:12px;font-weight:bold}.primary{border:0;background:#fff;color:#111}.secondary{border:1px solid #ffffff55;background:#ffffff18;color:#fff}
+.section{padding:25px 5%}.heading{margin-bottom:20px}.heading p{color:#888;margin-top:6px}
+.categories,.products,.features,.admin-stats{display:grid;gap:20px}.categories{grid-template-columns:repeat(4,1fr);gap:16px}.category{background:#fff;padding:24px;border-radius:20px;border:1px solid #eee;transition:.2s;cursor:pointer}.category:hover,.product:hover{transform:translateY(-5px);box-shadow:0 15px 35px #0001}.category-icon{font-size:32px;margin-bottom:12px}.category p,.feature p,.stat p{color:#888;margin-top:6px}
+.products{grid-template-columns:repeat(4,1fr)}.product{background:#fff;border-radius:20px;overflow:hidden;border:1px solid #eee;transition:.2s}.product-image{height:210px;position:relative;background:#eee}.product-image img{width:100%;height:100%;object-fit:cover}.badge{position:absolute;top:10px;left:10px;background:#111;color:#fff;padding:6px 9px;border-radius:8px;font-size:11px}.wish{position:absolute;top:10px;right:10px;width:35px;height:35px;border:0;border-radius:50%;background:#fff;font-size:17px}.product-info{padding:16px}.product-cat{font-size:11px;color:#888;text-transform:uppercase}.product-info h3{margin:7px 0}.rating{color:#f59e0b;font-size:13px}.price{font-size:21px;font-weight:bold;margin:10px 0}.old-price{color:#aaa;font-size:13px;text-decoration:line-through;margin-left:7px}.product-btn,.full-btn{width:100%;padding:12px;border:0;border-radius:11px;background:#111;color:#fff;font-weight:bold}.product-btn:hover,.full-btn:hover{background:#6d28d9}
+.features{margin:30px 5%;padding:25px;background:#fff;border-radius:22px;grid-template-columns:repeat(4,1fr)}.feature{padding:10px}
+footer{margin-top:40px;padding:45px 5%;background:#111;color:#fff}.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:30px}footer p,footer li{color:#aaa;line-height:1.8;font-size:14px}footer ul{list-style:none}.footer-bottom{text-align:center;border-top:1px solid #333;margin-top:30px;padding-top:20px;color:#777}
+.modal{display:none;position:fixed;inset:0;z-index:500;background:#0009;align-items:center;justify-content:center;padding:20px}.modal-box{width:100%;max-width:540px;max-height:90vh;overflow:auto;background:#fff;border-radius:24px;padding:25px}.close{float:right;border:0;width:32px;height:32px;border-radius:50%}.modal-box h2{margin-bottom:15px}.modal-box input,.modal-box select,.modal-box textarea{width:100%;padding:12px;margin:7px 0;border:1px solid #ddd;border-radius:10px;outline:0}.cart-item{display:flex;justify-content:space-between;gap:10px;padding:14px 0;border-bottom:1px solid #eee}.cart-controls button{border:0;padding:5px 9px;border-radius:7px}.total-box{background:#f0eaff;padding:16px;border-radius:14px;margin-top:15px}
+.ai-button{position:fixed;right:22px;bottom:22px;z-index:300;width:62px;height:62px;border:0;border-radius:50%;background:#6d28d9;color:#fff;font-size:25px;box-shadow:0 10px 30px #0003}.ai-box{display:none;flex-direction:column;position:fixed;right:20px;bottom:95px;z-index:400;width:370px;height:500px;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 20px 60px #0004}.ai-head{padding:17px;background:#6d28d9;color:#fff;display:flex;justify-content:space-between}.ai-messages{flex:1;overflow:auto;padding:15px;background:#fafafa}.message{max-width:85%;padding:10px 13px;border-radius:14px;background:#eee8ff;margin-bottom:10px;font-size:14px}.message.user{margin-left:auto;background:#6d28d9;color:#fff}.ai-input{display:flex;gap:7px;padding:10px}.ai-input input{flex:1;border:1px solid #ddd;border-radius:20px;padding:10px}.ai-input button{width:43px;border:0;border-radius:50%;background:#6d28d9;color:#fff}
+#adminPage{display:none;min-height:100vh;background:#f1f3f8}.admin-header{background:#111;color:#fff;padding:18px 5%;display:flex;align-items:center;justify-content:space-between}.admin-header button{background:#6d28d9;color:#fff;border:0;padding:10px 15px;border-radius:10px}.admin-content{padding:30px 5%}.admin-stats{grid-template-columns:repeat(4,1fr);margin:25px 0}.stat,.admin-panel{background:#fff;padding:22px;border-radius:20px;border:1px solid #eee}.stat h2{font-size:30px;margin-top:10px}.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.admin-panel{margin-bottom:20px}.admin-panel h2{margin-bottom:15px}.admin-product{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid #eee}.admin-actions{display:flex;gap:5px}.small-btn{border:0;padding:7px 9px;border-radius:8px}.delete-btn{background:#ffe4e4}.edit-btn{background:#eee8ff}.order-admin{padding:15px 0;border-bottom:1px solid #eee}.status{padding:8px;border:1px solid #ddd;border-radius:8px;margin-top:8px}.chart{height:230px;display:flex;align-items:end;gap:12px;padding:20px 5px}.bar{flex:1;background:#6d28d9;border-radius:7px 7px 0 0;min-height:10px;position:relative}.bar span{position:absolute;bottom:100%;font-size:10px;margin-bottom:4px}.toast{position:fixed;right:20px;top:90px;z-index:1000;background:#111;color:#fff;padding:13px 18px;border-radius:12px;display:none}
+@media(max-width:1000px){.products{grid-template-columns:repeat(3,1fr)}.categories{grid-template-columns:repeat(2,1fr)}.admin-stats{grid-template-columns:repeat(2,1fr)}.features{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){header{flex-wrap:wrap}.search{order:3;flex-basis:100%}.products{grid-template-columns:repeat(2,1fr)}.hero{padding:35px 25px}.hero h1{font-size:38px}.admin-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr}.ai-box{width:calc(100% - 30px);right:15px}}
+@media(max-width:450px){.products,.categories,.admin-stats,.features{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div id="customerSite">
+<header>
+<div class="logo" onclick="goHome()">Apx<span>mart</span></div>
+<input class="search" id="searchInput" placeholder="Search products, categories..." oninput="searchProducts()">
+<div class="header-buttons">
+<button onclick="showWishlist()">♡</button><button onclick="showOrders()">📦</button>
+<button onclick="openCart()">🛒 <span id="cartCount">0</span></button>
+<button class="login-btn" onclick="openLogin()">Account</button>
+</div>
+</header>
+
+<nav>
+<button onclick="filterCategory('All')">All</button>
+<button onclick="filterCategory('Electronics')">Electronics</button>
+<button onclick="filterCategory('Fashion')">Fashion</button>
+<button onclick="filterCategory('Home')">Home</button>
+<button onclick="filterCategory('Accessories')">Accessories</button>
+</nav>
+
+<section class="hero">
+<small>✨ WELCOME TO APXMART</small>
+<h1>Everything you need.<br><span>One smart marketplace.</span></h1>
+<p>Discover electronics, fashion, home products and accessories with a smooth modern shopping experience powered by Apxmart.</p>
+<div class="hero-buttons">
+<button class="primary" onclick="scrollProducts()">Shop Now →</button>
+<button class="secondary" onclick="toggleAI()">🤖 Ask Apxmart AI</button>
+</div>
+</section>
+
+<section class="section">
+<div class="heading">
+<h2>Shop by Category</h2>
+<p>Explore our popular categories</p>
+</div>
+<div class="categories">
+<div class="category" onclick="filterCategory('Electronics')"><div class="category-icon">💻</div><h3>Electronics</h3><p>Smart devices & gadgets</p></div>
+<div class="category" onclick="filterCategory('Fashion')"><div class="category-icon">👟</div><h3>Fashion</h3><p>Style for every day</p></div>
+<div class="category" onclick="filterCategory('Home')"><div class="category-icon">🏠</div><h3>Home</h3><p>Upgrade your space</p></div>
+<div class="category" onclick="filterCategory('Accessories')"><div class="category-icon">⌚</div><h3>Accessories</h3><p>Complete your look</p></div>
+</div>
+</section>
+
+<section class="section" id="productsSection">
+<div class="heading">
+<h2>Popular Products</h2>
+<p>Handpicked products for you</p>
+</div>
+<div class="products" id="productGrid"></div>
+</section>
+
+<div class="features">
+<div class="feature">🚚 <b>Fast Delivery</b><p>Quick doorstep delivery</p></div>
+<div class="feature">🔒 <b>Secure Shopping</b><p>Protected shopping experience</p></div>
+<div class="feature">💳 <b>Easy Payments</b><p>Multiple payment options</p></div>
+<div class="feature">🤖 <b>AI Assistance</b><p>Smart product recommendations</p></div>
+</div>
+
+<footer>
+<div class="footer-grid">
+<div><h3>Apxmart</h3><p>Smart marketplace combining e-commerce and AI.</p></div>
+<div><h3>Shop</h3><ul><li>Electronics</li><li>Fashion</li><li>Home</li></ul></div>
+<div><h3>Support</h3><ul><li>Help Center</li><li>Contact</li><li>Orders</li></ul></div>
+<div><h3>Company</h3><ul><li>About</li><li>Privacy</li><li>Terms</li></ul></div>
+</div>
+<div class="footer-bottom">© 2026 Apxmart. All rights reserved.</div>
+</footer>
+</div>
+
+<div id="adminPage">
+<div class="admin-header">
+<h2>⚡ Apxmart Admin Dashboard</h2>
+<button onclick="adminLogout()">Logout</button>
+</div>
+
+<div class="admin-content">
+<div class="admin-stats">
+<div class="stat"><p>Products</p><h2 id="statProducts">0</h2></div>
+<div class="stat"><p>Orders</p><h2 id="statOrders">0</h2></div>
+<div class="stat"><p>Sales</p><h2 id="statSales">₹0</h2></div>
+<div class="stat"><p>Customers</p><h2 id="statCustomers">0</h2></div>
+</div>
+
+<div class="admin-grid">
+<div>
+<div class="admin-panel">
+<h2>📦 Orders</h2>
+<div id="adminOrders"></div>
+</div>
+
+<div class="admin-panel">
+<h2>📈 Sales</h2>
+<div class="chart" id="salesChart"></div>
+</div>
+</div>
+
+<div>
+<div class="admin-panel">
+<h2>🛍️ Products</h2>
+<div id="adminProducts"></div>
+</div>
+
+<div class="admin-panel">
+<h2>🏆 Best Selling</h2>
+<div id="bestProducts"></div>
+</div>
+
+<div class="admin-panel">
+<h2>🔔 Notifications</h2>
+<div id="notifications"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<div id="aiBox" class="ai-box">
+<div class="ai-head">
+<b>🤖 Apxmart AI</b>
+<button onclick="toggleAI()">✕</button>
+</div>
+<div class="ai-messages" id="aiMessages">
+<div class="message">👋 Hi! Ask me about products, categories or prices.</div>
+</div>
+<div class="ai-input">
+<input id="aiInput" placeholder="Ask something..." onkeydown="if(event.key==='Enter')sendAI()">
+<button onclick="sendAI()">➤</button>
+</div>
+</div>
+
+<button class="ai-button" onclick="toggleAI()">🤖</button>
+
+<!-- MODALS -->
+
+<div class="modal" id="loginModal">
+<div class="modal-box">
+<button class="close" onclick="closeModal('loginModal')">✕</button>
+<h2>Login</h2>
+<input id="loginEmail" placeholder="Email">
+<input id="loginPassword" type="password" placeholder="Password">
+<button class="full-btn" onclick="loginUser()">Login</button>
+<p style="margin-top:15px">New user? <button onclick="switchSignup()">Create account</button></p>
+</div>
+</div>
+
+<div class="modal" id="signupModal">
+<div class="modal-box">
+<button class="close" onclick="closeModal('signupModal')">✕</button>
+<h2>Create Account</h2>
+<input id="signupName" placeholder="Full name">
+<input id="signupEmail" placeholder="Email">
+<input id="signupPassword" type="password" placeholder="Password">
+<button class="full-btn" onclick="signupUser()">Create Account</button>
+</div>
+</div>
+
+<div class="modal" id="adminLoginModal">
+<div class="modal-box">
+<button class="close" onclick="closeModal('adminLoginModal')">✕</button>
+<h2>Admin Login</h2>
+<input id="adminEmail" placeholder="Admin email">
+<input id="adminPassword" type="password" placeholder="Password">
+<button class="full-btn" onclick="adminLogin()">Login as Admin</button>
+</div>
+</div>
+
+<div class="modal" id="cartModal">
+<div class="modal-box">
+<button class="close" onclick="closeModal('cartModal')">✕</button>
+<h2>Your Cart</h2>
+<div id="cartItems"></div>
+<div class="total-box">
+<b>Total: ₹<span id="cartTotal">0</span></b>
+</div>
+<button class="full-btn" onclick="openCheckout()">Proceed to Checkout</button>
+</div>
+</div>
+
+<div class="modal" id="checkoutModal">
+<div class="modal-box">
+<button class="close" onclick="closeModal('checkoutModal')">✕</button>
+<h2>Checkout</h2>
+<input id="checkoutName" placeholder="Full Name">
+<input id="checkoutPhone" placeholder="Phone Number">
+<textarea id="checkoutAddress" placeholder="Delivery Address"></textarea>
+<select id="paymentMethod">
+<option value="COD">Cash on Delivery</option>
+<option value="UPI">UPI</option>
+<option value="Card">Card</option>
+</select>
+<input id="couponInput" placeholder="Coupon code">
+<button class="full-btn" onclick="placeOrder()">Place Order</button>
+</div>
+</div>
+
+<div class="modal" id="productModal">
+<div class="modal-box">
+<button class="close" onclick="closeModal('productModal')">✕</button>
+<img id="detailImage" style="width:100%;height:260px;object-fit:cover;border-radius:15px">
+<h2 id="detailName"></h2>
+<p id="detailDescription"></p>
+<h2 id="detailPrice"></h2>
+<button class="full-btn" onclick="addDetailToCart()">Add to Cart</button>
+</div>
+</div>
+
+<div class="modal" id="ordersModal">
+<div class="modal-box">
+<button class="close" onclick="closeModal('ordersModal')">✕</button>
+<h2>My Orders</h2>
+<div id="ordersList"></div>
+</div>
+</div>
+
+<div class="modal" id="wishlistModal">
+<div class="modal-box">
+<button class="close" onclick="closeModal('wishlistModal')">✕</button>
+<h2>Wishlist</h2>
+<div id="wishlistList"></div>
+</div>
+</div>
+
+<div class="modal" id="editProductModal">
+<div class="modal-box">
+<button class="close" onclick="closeModal('editProductModal')">✕</button>
+<h2>Edit Product</h2>
+<input id="editName" placeholder="Product name">
+<input id="editPrice" type="number" placeholder="Price">
+<input id="editOldPrice" type="number" placeholder="Old price">
+<select id="editCategory">
+<option>Electronics</option>
+<option>Fashion</option>
+<option>Home</option>
+<option>Accessories</option>
+</select>
+<input id="editImage" placeholder="Image URL">
+<textarea id="editDescription" placeholder="Description"></textarea>
+<button class="full-btn" onclick="saveEditedProduct()">Save Changes</button>
+</div>
+</div>
+
+<div class="modal" id="addProductModal">
+<div class="modal-box">
+<button class="close" onclick="closeModal('addProductModal')">✕</button>
+<h2>Add Product</h2>
+<input id="newName" placeholder="Product name">
+<input id="newPrice" type="number" placeholder="Price">
+<input id="newOldPrice" type="number" placeholder="Old price">
+<select id="newCategory">
+<option>Electronics</option>
+<option>Fashion</option>
+<option>Home</option>
+<option>Accessories</option>
+</select>
+<input id="newImage" placeholder="Image URL">
+<textarea id="newDescription" placeholder="Description"></textarea>
+<button class="full-btn" onclick="addProduct()">Add Product</button>
+</div>
+</div>
+
+<script>
+let products=[
+{id:1,name:"Wireless Headphones",price:1499,oldPrice:1999,category:"Electronics",image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e",description:"Premium wireless headphones with clear sound."},
+{id:2,name:"Smart Watch",price:2499,oldPrice:3499,category:"Electronics",image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30",description:"Smart watch with modern features."},
+{id:3,name:"Gaming Keyboard",price:1799,oldPrice:2299,category:"Electronics",image:"https://images.unsplash.com/photo-1587829741301-dc798b83add3",description:"RGB gaming keyboard."},
+{id:4,name:"Running Shoes",price:1999,oldPrice:2999,category:"Fashion",image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff",description:"Comfortable everyday running shoes."},
+{id:5,name:"Classic Hoodie",price:1299,oldPrice:1799,category:"Fashion",image:"https://images.unsplash.com/photo-1556821840-3a63f95609a7",description:"Soft and stylish hoodie."},
+{id:6,name:"Table Lamp",price:899,oldPrice:1299,category:"Home",image:"https://images.unsplash.com/photo-1507473885765-e6ed057f782c",description:"Modern table lamp for your room."},
+{id:7,name:"Backpack",price:999,oldPrice:1499,category:"Accessories",image:"https://images.unsplash.com/photo-1553062407-98eeb64c6a62",description:"Durable everyday backpack."},
+{id:8,name:"Sunglasses",price:699,oldPrice:999,category:"Accessories",image:"https://images.unsplash.com/photo-1511499767150-a48a237f0083",description:"Stylish sunglasses."}
+];
+
+let cart=JSON.parse(localStorage.getItem("apxmartCart")||"[]");
+let wishlist=JSON.parse(localStorage.getItem("apxmartWishlist")||"[]");
+let orders=JSON.parse(localStorage.getItem("apxmartOrders")||"[]");
+let databaseOrders=[];
+let currentCategory="All";
+let selectedProduct=null;
+let editingProductId=null;
+
+function saveAll(){
+localStorage.setItem("apxmartCart",JSON.stringify(cart));
+localStorage.setItem("apxmartWishlist",JSON.stringify(wishlist));
+localStorage.setItem("apxmartOrders",JSON.stringify(orders));
+}
+
+function displayProducts(){
+const grid=document.getElementById("productGrid");
+let list=products.filter(p=>currentCategory==="All"||p.category===currentCategory);
+const q=document.getElementById("searchInput").value.toLowerCase();
+if(q)list=list.filter(p=>(p.name+p.category+p.description).toLowerCase().includes(q));
+
+grid.innerHTML=list.map(p=>`
+<div class="product">
+<div class="product-image">
+<img src="${p.image}" alt="${p.name}">
+<button class="wish" onclick="toggleWishlist(${p.id})">${wishlist.includes(p.id)?"❤️":"♡"}</button>
+</div>
+<div class="product-info">
+<div class="product-cat">${p.category}</div>
+<h3>${p.name}</h3>
+<div class="rating">★★★★★</div>
+<div class="price">₹${p.price}<span class="old-price">₹${p.oldPrice}</span></div>
+<button class="product-btn" onclick="openProduct(${p.id})">View Product</button>
+</div>
+</div>`).join("");
+}
+
+function searchProducts(){displayProducts()}
+function filterCategory(c){currentCategory=c;displayProducts();scrollProducts()}
+function scrollProducts(){document.getElementById("productsSection").scrollIntoView({behavior:"smooth"})}
+
+function openProduct(id){
+selectedProduct=products.find(p=>p.id===id);
+if(!selectedProduct)return;
+document.getElementById("detailImage").src=selectedProduct.image;
+document.getElementById("detailName").innerText=selectedProduct.name;
+document.getElementById("detailDescription").innerText=selectedProduct.description;
+document.getElementById("detailPrice").innerText="₹"+selectedProduct.price;
+openModal("productModal");
+}
+
+function addDetailToCart(){
+if(!selectedProduct)return;
+addToCart(selectedProduct.id);
+closeModal("productModal");
+}
+
+function addToCart(id){
+const p=products.find(x=>x.id===id);
+if(!p)return;
+const item=cart.find(x=>x.id===id);
+if(item)item.quantity++;
+else cart.push({...p,quantity:1});
+saveAll();
+updateCartCount();
+toast("Added to cart 🛒");
+}
+
+function updateCartCount(){
+document.getElementById("cartCount").innerText=cart.reduce((s,x)=>s+x.quantity,0);
+}
+
+function openCart(){
+renderCart();
+openModal("cartModal");
+}
+
+function renderCart(){
+const box=document.getElementById("cartItems");
+if(!cart.length){
+box.innerHTML="<p>Your cart is empty.</p>";
+document.getElementById("cartTotal").innerText="0";
+return;
+}
+
+box.innerHTML=cart.map(i=>`
+<div class="cart-item">
+<div><b>${i.name}</b><br>₹${i.price}</div>
+<div class="cart-controls">
+<button onclick="changeQty(${i.id},-1)">−</button>
+<b>${i.quantity}</b>
+<button onclick="changeQty(${i.id},1)">+</button>
+<button onclick="removeCart(${i.id})">🗑️</button>
+</div>
+</div>`).join("");
+
+document.getElementById("cartTotal").innerText=
+cart.reduce((s,x)=>s+x.price*x.quantity,0);
+}
+
+function changeQty(id,n){
+const item=cart.find(x=>x.id===id);
+if(!item)return;
+item.quantity+=n;
+if(item.quantity<=0)cart=cart.filter(x=>x.id!==id);
+saveAll();
+updateCartCount();
+renderCart();
+}
+
+function removeCart(id){
+cart=cart.filter(x=>x.id!==id);
+saveAll();
+updateCartCount();
+renderCart();
+}
+
+function toggleWishlist(id){
+if(wishlist.includes(id))wishlist=wishlist.filter(x=>x!==id);
+else wishlist.push(id);
+saveAll();
+displayProducts();
+}
+
+function showWishlist(){
+const box=document.getElementById("wishlistList");
+const list=products.filter(p=>wishlist.includes(p.id));
+box.innerHTML=list.length?list.map(p=>`
+<div class="cart-item">
+<b>${p.name}</b><span>₹${p.price}</span>
+</div>`).join(""):"<p>No wishlist items.</p>";
+openModal("wishlistModal");
+}
+
+function openCheckout(){
+if(!cart.length){toast("Cart is empty");return}
+closeModal("cartModal");
+openModal("checkoutModal");
+}
+
+async function placeOrder(){
+const name=document.getElementById("checkoutName").value.trim();
+const phone=document.getElementById("checkoutPhone").value.trim();
+const address=document.getElementById("checkoutAddress").value.trim();
+const payment=document.getElementById("paymentMethod").value;
+const coupon=document.getElementById("couponInput").value.trim().toUpperCase();
+
+if(!name||!phone||!address){
+toast("Please fill all details");
+return;
+}
+
+let total=cart.reduce((s,x)=>s+x.price*x.quantity,0);
+if(coupon==="APX10")total=Math.max(0,total-100);
+
+let email="customer@apxmart.com";
+const currentUser=JSON.parse(localStorage.getItem("apxmartCurrentUser")||"null");
+if(currentUser&&currentUser.email)email=currentUser.email;
+
+try{
+const response=await fetch("http://127.0.0.1:3000/api/orders",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+customer_name:name,
+customer_email:email,
+total_amount:total,
+payment_method:payment
+})
+});
+
+const result=await response.json();
+
+if(!response.ok||!result.success){
+toast(result.message||"Order failed");
+return;
+}
+
+orders.push({
+id:Date.now(),
+databaseOrderId:result.order_id,
+customer:name,
+phone,
+address,
+payment,
+total,
+status:"Pending",
+items:cart.map(x=>({...x}))
+});
+
+cart=[];
+saveAll();
+updateCartCount();
+closeModal("checkoutModal");
+toast("🎉 Order placed successfully!");
+
+}catch(error){
+console.error(error);
+toast("Backend is not running");
+}
+}
+
+function showOrders(){
+const box=document.getElementById("ordersList");
+box.innerHTML=orders.length?orders.slice().reverse().map(o=>`
+<div class="order-admin">
+<b>Order #${o.databaseOrderId||o.id}</b><br>
+Customer: ${o.customer}<br>
+Payment: ${o.payment}<br>
+Total: ₹${o.total}<br>
+Status: <b>${o.status||"Pending"}</b>
+</div>`).join(""):"<p>No orders yet.</p>";
+openModal("ordersModal");
+}
+
+function openLogin(){openModal("loginModal")}
+function switchSignup(){closeModal("loginModal");openModal("signupModal")}
+
+function signupUser(){
+const name=document.getElementById("signupName").value.trim();
+const email=document.getElementById("signupEmail").value.trim();
+const password=document.getElementById("signupPassword").value;
+
+if(!name||!email||!password){
+toast("Fill all fields");
+return;
+}
+
+localStorage.setItem("apxmartCurrentUser",JSON.stringify({name,email}));
+closeModal("signupModal");
+toast("Account created 🎉");
+}
+
+function loginUser(){
+const email=document.getElementById("loginEmail").value.trim();
+const password=document.getElementById("loginPassword").value;
+
+if(!email||!password){
+toast("Enter email and password");
+return;
+}
+
+localStorage.setItem("apxmartCurrentUser",JSON.stringify({email}));
+closeModal("loginModal");
+toast("Logged in successfully");
+}
+
+function openAdminLogin(){openModal("adminLoginModal")}
+
+function adminLogin(){
+const e=document.getElementById("adminEmail").value.trim();
+const p=document.getElementById("adminPassword").value;
+
+if(e==="admin@apxmart.com"&&p==="admin123"){
+closeModal("adminLoginModal");
+document.getElementById("customerSite").style.display="none";
+document.getElementById("adminPage").style.display="block";
+updateAdmin();
+}else toast("Incorrect admin login");
+}
+
+function adminLogout(){
+document.getElementById("adminPage").style.display="none";
+document.getElementById("customerSite").style.display="block";
+}
+
+function openModal(id){
+document.getElementById(id).style.display="flex";
+}
+
+function closeModal(id){
+document.getElementById(id).style.display="none";
+}
+
+function goHome(){
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function toast(message){
+const t=document.getElementById("toast");
+t.innerText=message;
+t.style.display="block";
+setTimeout(()=>t.style.display="none",2500);
+}
+function toggleAI(){
+    const box=document.getElementById("aiBox");
+    box.style.display=box.style.display==="flex"?"none":"flex";
+}
+
+function sendAI(){
+    const input=document.getElementById("aiInput");
+    const text=input.value.trim();
+
+    if(!text)return;
+
+    const messages=document.getElementById("aiMessages");
+
+    messages.innerHTML+=`
+        <div class="message user">${text}</div>
+    `;
+
+    input.value="";
+
+    let reply="I can help you find products, prices and categories.";
+
+    const q=text.toLowerCase();
+
+    if(q.includes("laptop")||q.includes("computer")){
+        reply="For electronics, check our Electronics category 💻";
+    }else if(q.includes("shoe")){
+        reply="You can check our Running Shoes 👟 for ₹1,999.";
+    }else if(q.includes("watch")){
+        reply="Our Smart Watch is available for ₹2,499 ⌚.";
+    }else if(q.includes("cheap")||q.includes("budget")){
+        const cheapest=[...products].sort((a,b)=>a.price-b.price)[0];
+        reply=`Our lowest-priced product is ${cheapest.name} at ₹${cheapest.price}.`;
+    }else if(q.includes("electronics")){
+        reply="We have headphones, smart watches and gaming keyboards in Electronics.";
+    }else if(q.includes("fashion")){
+        reply="Our Fashion category includes shoes and hoodies 👕.";
+    }else if(q.includes("home")){
+        reply="Check our Home category for products like the Table Lamp 🏠.";
+    }
+
+    setTimeout(()=>{
+        messages.innerHTML+=`
+            <div class="message">${reply}</div>
+        `;
+        messages.scrollTop=messages.scrollHeight;
+    },400);
+}
+
+
+async function loadDatabaseOrders(){
+
+    try{
+
+        const response=await fetch(
+            "http://127.0.0.1:3000/api/orders"
+        );
+
+        const result=await response.json();
+
+        if(result.success){
+
+            databaseOrders=result.orders || [];
+
+            renderAdminOrders();
+
+            updateAdminStats();
+
+        }
+
+    }catch(error){
+
+        console.error(
+            "Database order error:",
+            error
+        );
+
+        document.getElementById("adminOrders").innerHTML=`
+            <p style="color:red">
+                Unable to connect to SQLite database.
+            </p>
+        `;
+    }
+}
+
+
+function renderAdminOrders(){
+
+    const box=document.getElementById("adminOrders");
+
+    if(!databaseOrders.length){
+
+        box.innerHTML=`
+            <p>No orders in database.</p>
+        `;
+
+        return;
+    }
+
+
+    box.innerHTML=databaseOrders.map(order=>`
+
+        <div class="order-admin">
+
+            <b>Order #${order.id}</b>
+
+            <p>
+                Customer:
+                ${order.customer_name}
+            </p>
+
+            <p>
+                Email:
+                ${order.customer_email}
+            </p>
+
+            <p>
+                Amount:
+                ₹${order.total_amount}
+            </p>
+
+            <p>
+                Payment:
+                ${order.payment_method}
+            </p>
+
+            <p>
+                Date:
+                ${order.created_at}
+            </p>
+
+            <select
+                class="status"
+                onchange="updateOrderStatus(${order.id},this.value)"
+            >
+
+                <option
+                    ${order.status==="Pending"?"selected":""}
+                >
+                    Pending
+                </option>
+
+                <option
+                    ${order.status==="Processing"?"selected":""}
+                >
+                    Processing
+                </option>
+
+                <option
+                    ${order.status==="Shipped"?"selected":""}
+                >
+                    Shipped
+                </option>
+
+                <option
+                    ${order.status==="Delivered"?"selected":""}
+                >
+                    Delivered
+                </option>
+
+                <option
+                    ${order.status==="Cancelled"?"selected":""}
+                >
+                    Cancelled
+                </option>
+
+            </select>
+
+        </div>
+
+    `).join("");
+}
+
+
+async function updateOrderStatus(orderId,status){
+
+    try{
+
+        const response=await fetch(
+            `http://127.0.0.1:3000/api/orders/${orderId}/status`,
+            {
+                method:"PUT",
+
+                headers:{
+                    "Content-Type":
+                    "application/json"
+                },
+
+                body:JSON.stringify({
+                    status:status
+                })
+            }
+        );
+
+        const result=await response.json();
+
+        if(!result.success){
+
+            toast(
+                result.message ||
+                "Status update failed"
+            );
+
+            return;
+        }
+
+        const order=
+            databaseOrders.find(
+                x=>x.id===orderId
+            );
+
+        if(order){
+            order.status=status;
+        }
+
+        toast(
+            "Order status updated successfully"
+        );
+
+        renderAdminOrders();
+
+    }catch(error){
+
+        console.error(error);
+
+        toast(
+            "Backend is not running"
+        );
+    }
+}
+
+
+function updateAdminStats(){
+
+    document.getElementById(
+        "statProducts"
+    ).innerText=products.length;
+
+
+    document.getElementById(
+        "statOrders"
+    ).innerText=databaseOrders.length;
+
+
+    const sales=
+        databaseOrders.reduce(
+            (sum,o)=>
+            sum+Number(o.total_amount||0),
+            0
+        );
+
+    document.getElementById(
+        "statSales"
+    ).innerText=
+        "₹"+sales.toLocaleString("en-IN");
+
+
+    const customers=
+        new Set(
+            databaseOrders.map(
+                o=>o.customer_email
+            )
+        ).size;
+
+    document.getElementById(
+        "statCustomers"
+    ).innerText=customers;
+
+
+    renderSalesChart();
+
+    renderBestProducts();
+
+    renderNotifications();
+}
+
+
+function renderSalesChart(){
+
+    const chart=
+        document.getElementById(
+            "salesChart"
+        );
+
+    if(!databaseOrders.length){
+
+        chart.innerHTML=`
+            <p>No sales data yet.</p>
+        `;
+
+        return;
+    }
+
+
+    const max=Math.max(
+        ...databaseOrders.map(
+            o=>Number(o.total_amount||0)
+        )
+    );
+
+
+    chart.innerHTML=
+        databaseOrders
+        .slice(0,8)
+        .reverse()
+        .map(order=>{
+
+            const amount=
+                Number(
+                    order.total_amount||0
+                );
+
+            const height=
+                max>0
+                ?Math.max(
+                    15,
+                    (amount/max)*180
+                )
+                :15;
+
+            return `
+                <div
+                    class="bar"
+                    style="height:${height}px"
+                >
+                    <span>
+                        ₹${amount}
+                    </span>
+                </div>
+            `;
+
+        }).join("");
+}
+
+
+function renderBestProducts(){
+
+    const box=
+        document.getElementById(
+            "bestProducts"
+        );
+
+    const counts={};
+
+
+    orders.forEach(order=>{
+
+        if(!order.items)return;
+
+        order.items.forEach(item=>{
+
+            counts[item.name]=
+                (counts[item.name]||0)
+                +Number(item.quantity||1);
+
+        });
+
+    });
+
+
+    const list=
+        Object.entries(counts)
+        .sort((a,b)=>b[1]-a[1])
+        .slice(0,5);
+
+
+    if(!list.length){
+
+        box.innerHTML=
+            "<p>No product sales yet.</p>";
+
+        return;
+    }
+
+
+    box.innerHTML=
+        list.map(
+            ([name,count])=>
+            `<div class="admin-product">
+                <span>${name}</span>
+                <b>${count} sold</b>
+            </div>`
+        ).join("");
+}
+
+
+function renderNotifications(){
+
+    const box=
+        document.getElementById(
+            "notifications"
+        );
+
+
+    if(!databaseOrders.length){
+
+        box.innerHTML=
+            "<p>No new notifications.</p>";
+
+        return;
+    }
+
+
+    box.innerHTML=
+        databaseOrders
+        .slice(0,5)
+        .map(order=>`
+
+            <div
+                class="admin-product"
+            >
+
+                <span>
+                    📦 New order #${order.id}
+                </span>
+
+                <b>
+                    ₹${order.total_amount}
+                </b>
+
+            </div>
+
+        `).join("");
+}
+
+
+function updateAdmin(){
+
+    displayAdminProducts();
+
+    updateAdminStats();
+
+    loadDatabaseOrders();
+}
+
+
+function displayAdminProducts(){
+
+    const box=
+        document.getElementById(
+            "adminProducts"
+        );
+
+
+    box.innerHTML=`
+
+        <button
+            class="full-btn"
+            onclick="openAddProduct()"
+            style="margin-bottom:15px"
+        >
+            + Add Product
+        </button>
+
+    `;
+
+
+    box.innerHTML+=products.map(p=>`
+
+        <div class="admin-product">
+
+            <div>
+                <b>${p.name}</b>
+                <br>
+                <small>
+                    ${p.category} · ₹${p.price}
+                </small>
+            </div>
+
+            <div class="admin-actions">
+
+                <button
+                    class="small-btn edit-btn"
+                    onclick="editProduct(${p.id})"
+                >
+                    Edit
+                </button>
+
+                <button
+                    class="small-btn delete-btn"
+                    onclick="deleteProduct(${p.id})"
+                >
+                    Delete
+                </button>
+
+            </div>
+
+        </div>
+
+    `).join("");
+}
+
+
+function openAddProduct(){
+
+    document.getElementById(
+        "newName"
+    ).value="";
+
+    document.getElementById(
+        "newPrice"
+    ).value="";
+
+    document.getElementById(
+        "newOldPrice"
+    ).value="";
+
+    document.getElementById(
+        "newImage"
+    ).value="";
+
+    document.getElementById(
+        "newDescription"
+    ).value="";
+
+    openModal("addProductModal");
+}
+
+
+function addProduct(){
+
+    const name=
+        document.getElementById(
+            "newName"
+        ).value.trim();
+
+    const price=
+        Number(
+            document.getElementById(
+                "newPrice"
+            ).value
+        );
+
+    const oldPrice=
+        Number(
+            document.getElementById(
+                "newOldPrice"
+            ).value
+        );
+
+    const category=
+        document.getElementById(
+            "newCategory"
+        ).value;
+
+    const image=
+        document.getElementById(
+            "newImage"
+        ).value.trim();
+
+    const description=
+        document.getElementById(
+            "newDescription"
+        ).value.trim();
+
+
+    if(!name||!price){
+
+        toast(
+            "Product name and price required"
+        );
+
+        return;
+    }
+
+
+    products.push({
+
+        id:Date.now(),
+
+        name:name,
+
+        price:price,
+
+        oldPrice:oldPrice||price,
+
+        category:category,
+
+        image:image ||
+        "https://images.unsplash.com/photo-1523275335684-37898b6baf30",
+
+        description:
+        description ||
+        "A quality Apxmart product."
+
+    });
+
+
+    closeModal("addProductModal");
+
+    displayProducts();
+
+    displayAdminProducts();
+
+    updateAdminStats();
+
+    toast(
+        "Product added successfully"
+    );
+}
+
+
+function editProduct(id){
+
+    const p=
+        products.find(
+            x=>x.id===id
+        );
+
+    if(!p)return;
+
+
+    editingProductId=id;
+
+
+    document.getElementById(
+        "editName"
+    ).value=p.name;
+
+    document.getElementById(
+        "editPrice"
+    ).value=p.price;
+
+    document.getElementById(
+        "editOldPrice"
+    ).value=p.oldPrice;
+
+    document.getElementById(
+        "editCategory"
+    ).value=p.category;
+
+    document.getElementById(
+        "editImage"
+    ).value=p.image;
+
+    document.getElementById(
+        "editDescription"
+    ).value=p.description;
+
+
+    openModal(
+        "editProductModal"
+    );
+}
+
+
+function saveEditedProduct(){
+
+    const p=
+        products.find(
+            x=>x.id===editingProductId
+        );
+
+    if(!p)return;
+
+
+    p.name=
+        document.getElementById(
+            "editName"
+        ).value.trim();
+
+    p.price=
+        Number(
+            document.getElementById(
+                "editPrice"
+            ).value
+        );
+
+    p.oldPrice=
+        Number(
+            document.getElementById(
+                "editOldPrice"
+            ).value
+        );
+
+    p.category=
+        document.getElementById(
+            "editCategory"
+        ).value;
+
+    p.image=
+        document.getElementById(
+            "editImage"
+        ).value.trim();
+
+    p.description=
+        document.getElementById(
+            "editDescription"
+        ).value.trim();
+
+
+    closeModal(
+        "editProductModal"
+    );
+
+    displayProducts();
+
+    displayAdminProducts();
+
+    toast(
+        "Product updated"
+    );
+}
+
+
+function deleteProduct(id){
+
+    const p=
+        products.find(
+            x=>x.id===id
+        );
+
+    if(!p)return;
+
+
+    if(
+        !confirm(
+            `Delete ${p.name}?`
+        )
+    )return;
+
+
+    products=
+        products.filter(
+            x=>x.id!==id
+        );
+
+
+    cart=
+        cart.filter(
+            x=>x.id!==id
+        );
+
+
+    wishlist=
+        wishlist.filter(
+            x=>x!==id
+        );
+
+
+    saveAll();
+
+    displayProducts();
+
+    displayAdminProducts();
+
+    updateCartCount();
+
+    updateAdminStats();
+
+    toast(
+        "Product deleted"
+    );
+}
+
+
+document.addEventListener(
+    "keydown",
+    function(e){
+
+        if(e.key==="Escape"){
+
+            document
+            .querySelectorAll(".modal")
+            .forEach(m=>
+                m.style.display="none"
+            );
+
+        }
+
+    }
+);
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        displayProducts();
+
+        updateCartCount();
+
+        // Admin access:
+        // click Account and use admin login
+        // or type admin email/password
+        // through the admin login button.
+
+    }
+);
+
+
+// Make admin login available from Account button
+const originalOpenLogin=openLogin;
+
+openLogin=function(){
+
+    const choice=
+        confirm(
+            "Press OK for Admin Login, Cancel for Customer Login."
+        );
+
+    if(choice){
+        openAdminLogin();
+    }else{
+        originalOpenLogin();
+    }
+
+};
+
+
+</script>
+
+</body>
+</html>
+
+
+
