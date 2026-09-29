@@ -1,5 +1,6 @@
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
+const path = require("path");
 
 const app = express();
 
@@ -11,12 +12,10 @@ app.use(express.json());
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
-
     res.header(
         "Access-Control-Allow-Headers",
         "Origin, X-Requested-With, Content-Type, Accept"
     );
-
     res.header(
         "Access-Control-Allow-Methods",
         "GET,POST,PUT,DELETE,OPTIONS"
@@ -28,6 +27,13 @@ app.use((req, res, next) => {
 
     next();
 });
+
+// ==============================
+// SERVE WEBSITE
+// ==============================
+
+app.use(express.static(path.join(__dirname)));
+
 
 // ==============================
 // DATABASE
@@ -86,18 +92,9 @@ function createOrdersTable() {
 
 app.get("/", (req, res) => {
 
-    res.send(`
-        <html>
-            <head>
-                <title>Apxmart</title>
-            </head>
-
-            <body>
-                <h1>Apxmart Backend is Running!</h1>
-                <p>Your Apxmart server is online.</p>
-            </body>
-        </html>
-    `);
+    res.sendFile(
+        path.join(__dirname, "index.html")
+    );
 
 });
 
@@ -310,29 +307,21 @@ app.put("/api/orders/:id/status", (req, res) => {
 
 
 // ==============================
-// SERVER
+// START SERVER
 // ==============================
 
-// Render provides PORT automatically.
-// Your computer will use 3000.
-
 const PORT = process.env.PORT || 3000;
-
 
 const server = app.listen(
     PORT,
     "0.0.0.0",
-
     () => {
 
         console.log("");
         console.log("==============================");
         console.log("APXMART SERVER STARTED");
         console.log("==============================");
-        console.log(
-            "Port:",
-            PORT
-        );
+        console.log("Port:", PORT);
         console.log("==============================");
 
     }
@@ -350,4 +339,4 @@ server.on("error", (error) => {
         error.message
     );
 
-});
+});    
